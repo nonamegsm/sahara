@@ -27,7 +27,7 @@
 
 #pragma once
 
-
+#include <QObject>
 #include <QGroupBox>
 #include <QFileDialog>
 #include <fstream>

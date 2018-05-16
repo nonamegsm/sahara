@@ -35,7 +35,7 @@ using namespace OpenPST::GUI;
 
 
 LogWidget::LogWidget(QWidget *parent) :
-	QMainWindow(parent),
+	QGroupBox(parent),
 	ui(new Ui::LogWidget)
 {
 	ui->setupUi(this);
