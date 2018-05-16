@@ -84,11 +84,13 @@ namespace OpenPST {
 			private:
 				Ui::SaharaWindow *ui; 
 				TaskRunner taskRunner;
-				volatile bool taskShouldCancel = false;				
+				//volatile bool taskShouldCancel = false;	 NONAME
+				volatile bool taskShouldCancel;	
 				SaharaSerial port;
 				serial::PortInfo currentPort;
 				SaharaState deviceState;
-				int taskCount = 0;
+				//int taskCount = 0; NONAME
+				int taskCount;
 				AboutDialog aboutDialog;
 				std::vector<ResolvedSaharaXmlEntry> images;
 			public:

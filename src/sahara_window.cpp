@@ -35,7 +35,7 @@ SaharaWindow::SaharaWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::SaharaWindow),
 	port("", 115200, 500),
-	deviceState({}),
+	deviceState(),
 	taskRunner(&taskShouldCancel)
 {
 
@@ -134,7 +134,8 @@ void SaharaWindow::updatePortList()
 void SaharaWindow::connectToPort()
 {
 	serial::PortInfo device;
-	QString selected = ui->portList->currentData().toString();
+	//QString selected = ui->portList->currentData().toString();
+	QString selected = ui->portList->itemData(ui->portList->currentIndex()).toString();
 	QString tmp;
 
 	if (port.isOpen()) {
@@ -236,7 +237,8 @@ void SaharaWindow::writeHello(uint32_t overrideMode)
 		return;
 	}
 	
-	uint32_t mode = NULL != overrideMode ? overrideMode : ui->writeHelloSwitchModeValue->currentData().toUInt();
+//	uint32_t mode = NULL != overrideMode ? overrideMode : ui->writeHelloSwitchModeValue->currentData().toUInt();
+	uint32_t mode = NULL != overrideMode ? overrideMode : ui->writeHelloSwitchModeValue->itemData(ui->writeHelloSwitchModeValue->currentIndex()).toUInt();
 	uint32_t version = std::stoul(ui->writeHelloVersionValue->text().toStdString().c_str(), nullptr, 10);
 	uint32_t minVersion = std::stoul(ui->writeHelloMinimumVersionValue->text().toStdString().c_str(), nullptr, 10);
 
@@ -479,7 +481,7 @@ void SaharaWindow::switchMode()
 	}
 
 	QString tmp;
-	uint16_t requestMode = ui->switchModeValue->currentData().toUInt();
+	uint16_t requestMode = ui->switchModeValue->itemData(ui->switchModeValue->currentIndex()).toUInt();
 
 	log(tmp.sprintf("Requesting mode switch from %s (0x%02x) to %s (0x%02x)",
 		port.getNamedMode(deviceState.mode).c_str(),
@@ -517,7 +519,7 @@ void SaharaWindow::sendClientCommand()
 
 	QString tmp;
 	std::vector<uint8_t> data;
-	uint16_t requestedCommand = ui->clientCommandValue->currentData().toUInt();
+	uint16_t requestedCommand = ui->clientCommandValue->itemData(ui->clientCommandValue->currentIndex()).toUInt();
 	
 	try {
 		data = port.sendClientCommand(requestedCommand);
@@ -614,7 +616,7 @@ void SaharaWindow::disconnectPort()
 		log(tr("Port Closed"));
 		ui->portDisconnectButton->setEnabled(false);
 		ui->deviceStateText->setText(tr("Disconnected"));
-		deviceState = {};
+		//deviceState = NULL; NONAME DEINIT THIS
 	}
 }
 
