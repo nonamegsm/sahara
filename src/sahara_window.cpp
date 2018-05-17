@@ -101,7 +101,7 @@ SaharaWindow::~SaharaWindow()
 */
 void SaharaWindow::updatePortList() //NONAME
 {
-	/*
+	
 	if (port.isOpen()) {
 		log(tr("Port is currently open"));
 		return;
@@ -126,7 +126,7 @@ void SaharaWindow::updatePortList() //NONAME
 
 		ui->portList->addItem(tmp, device.port.c_str());
 	}
-	*/
+	
 }
 
 /**
@@ -134,7 +134,7 @@ void SaharaWindow::updatePortList() //NONAME
 */
 void SaharaWindow::connectToPort()  //NONAME
 {
-	/*
+	
 	serial::PortInfo device;
 	//QString selected = ui->portList->currentData().toString();
 	QString selected = ui->portList->itemData(ui->portList->currentIndex()).toString();
@@ -178,7 +178,7 @@ void SaharaWindow::connectToPort()  //NONAME
 			break;
 		}
 	}
-		*/
+		
 }
 
 /**

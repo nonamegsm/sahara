@@ -159,6 +159,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_task_runner_window.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="src\serial\impl\list_ports_win.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\task\sahara_image_transfer_task.h">
