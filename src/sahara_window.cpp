@@ -31,8 +31,7 @@ using namespace OpenPST::GUI;
 
 #define log(m) ui->logWidget->log(m); 
 
-SaharaWindow::SaharaWindow(QWidget *parent) :
-	QMainWindow(parent),
+SaharaWindow::SaharaWindow(QWidget *parent) :QMainWindow(parent),
 	ui(new Ui::SaharaWindow),
 	port("", 115200, 500),
 	deviceState(),
@@ -100,21 +99,22 @@ SaharaWindow::~SaharaWindow()
 /**
 * @brief SaharaWindow::UpdatePortList
 */
-void SaharaWindow::updatePortList()
+void SaharaWindow::updatePortList() //NONAME
 {
+	/*
 	if (port.isOpen()) {
 		log(tr("Port is currently open"));
 		return;
 	}
 
-	std::vector<serial::PortInfo> devices = serial::list_ports();
+	std::vector<serial::PortInfo> devices = serial::list_ports(); 
 
 	ui->portList->clear();
 	ui->portList->addItem(tr("- Select a Port -"));
 
 	QString tmp;
 
-	log(tmp.sprintf("Found %d devices", devices.size()));
+	log(tmp.sprintf("Found %d devices", devices.size())); 
 
     for (auto device : serial::list_ports())  {
 
@@ -126,13 +126,15 @@ void SaharaWindow::updatePortList()
 
 		ui->portList->addItem(tmp, device.port.c_str());
 	}
+	*/
 }
 
 /**
 * @brief SaharaWindow::ConnectToPort
 */
-void SaharaWindow::connectToPort()
+void SaharaWindow::connectToPort()  //NONAME
 {
+	/*
 	serial::PortInfo device;
 	//QString selected = ui->portList->currentData().toString();
 	QString selected = ui->portList->itemData(ui->portList->currentIndex()).toString();
@@ -176,7 +178,7 @@ void SaharaWindow::connectToPort()
 			break;
 		}
 	}
-		
+		*/
 }
 
 /**

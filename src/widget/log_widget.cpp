@@ -25,23 +25,21 @@
 * @author Gassan Idriss <ghassani@gmail.com>
 */
 
+
 #include "widget/log_widget.h"
 #include "ui_log_widget.h"
-#include "sahara_window.h"
-
 
 
 using namespace OpenPST::GUI;
 
 
-LogWidget::LogWidget(QWidget *parent) :
-	QGroupBox(parent),
+LogWidget::LogWidget(QWidget *parent) :QGroupBox(parent),
 	ui(new Ui::LogWidget)
 {
 	ui->setupUi(this);
 
-	QObject::connect(ui->clearLogButton, SIGNAL(clicked()), this, SLOT(clear()));
-	QObject::connect(ui->saveLogButton,	SIGNAL(clicked()), this, SLOT(save()));
+	//QObject::connect(ui->clearLogButton, SIGNAL(clicked()), this, SLOT(clear()));
+	//QObject::connect(ui->saveLogButton,	SIGNAL(clicked()), this, SLOT(save()));
 }
 
 LogWidget::~LogWidget()
@@ -80,18 +78,18 @@ void LogWidget::save()
 
 void LogWidget::log(const char* message)
 {
-	ui->log->appendPlainText(message);
+	//ui->log->appendPlainText(message);
 }
 
 
 void LogWidget::log(std::string message)
 {
-	ui->log->appendPlainText(message.c_str());
+	//ui->log->appendPlainText(message.c_str());
 }
 
 
 void LogWidget::log(QString message)
 {
-	ui->log->appendPlainText(message);
+	//ui->log->appendPlainText(message);
 }
 

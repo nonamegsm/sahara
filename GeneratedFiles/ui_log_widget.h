@@ -20,41 +20,41 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_Log_widget
+class Ui_LogWidget
 {
 public:
     QVBoxLayout *verticalLayout;
-    QTextBrowser *textBrowser;
+    QTextBrowser *log;
 
-    void setupUi(QWidget *Log_widget)
+    void setupUi(QWidget *LogWidget)
     {
-        if (Log_widget->objectName().isEmpty())
-            Log_widget->setObjectName(QStringLiteral("Log_widget"));
-        Log_widget->resize(877, 580);
-        verticalLayout = new QVBoxLayout(Log_widget);
+        if (LogWidget->objectName().isEmpty())
+            LogWidget->setObjectName(QStringLiteral("LogWidget"));
+        LogWidget->resize(649, 430);
+        verticalLayout = new QVBoxLayout(LogWidget);
         verticalLayout->setSpacing(0);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
-        textBrowser = new QTextBrowser(Log_widget);
-        textBrowser->setObjectName(QStringLiteral("textBrowser"));
+        log = new QTextBrowser(LogWidget);
+        log->setObjectName(QStringLiteral("log"));
 
-        verticalLayout->addWidget(textBrowser);
+        verticalLayout->addWidget(log);
 
 
-        retranslateUi(Log_widget);
+        retranslateUi(LogWidget);
 
-        QMetaObject::connectSlotsByName(Log_widget);
+        QMetaObject::connectSlotsByName(LogWidget);
     } // setupUi
 
-    void retranslateUi(QWidget *Log_widget)
+    void retranslateUi(QWidget *LogWidget)
     {
-        Log_widget->setWindowTitle(QApplication::translate("Log_widget", "Form", 0));
+        LogWidget->setWindowTitle(QApplication::translate("LogWidget", "LOG", 0));
     } // retranslateUi
 
 };
 
 namespace Ui {
-    class Log_widget: public Ui_Log_widget {};
+    class LogWidget: public Ui_LogWidget {};
 } // namespace Ui
 
 QT_END_NAMESPACE

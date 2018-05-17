@@ -28,6 +28,7 @@
 #pragma once
 
 #include "definitions.h"
+#include <stdlib.h>
 #include <string>
 #include <sstream>
 #include <cassert>
@@ -49,8 +50,8 @@ namespace OpenPST {
 			static T toInt(const std::string& str, bool hex = false) {
 				assert(std::is_fundamental<T>::value);
 
-				unsigned long long res = std::strtoull(str.c_str(), nullptr, hex ? 16 : 10);
-
+				//unsigned long long res = std::strtoull(str.c_str(), nullptr, hex ? 16 : 10);   
+				unsigned long long res = _strtoui64(str.c_str(), nullptr, hex ? 16 : 10);
 				if (errno == ERANGE){
 					std::stringstream ss;
 					ss << "Value " << str << " is out of range";

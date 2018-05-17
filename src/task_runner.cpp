@@ -17,64 +17,71 @@
 * You should have received a copy of the GNU General Public License
 * along with gui-common. If not, see <http://www.gnu.org/licenses/>.
 *
-* @file log_widget.h
-* @class LogWidget
+* @file task_runner.cpp
+* @class TaskRunner
 * @package openpst/gui-common
 * @brief
 *
 * @author Gassan Idriss <ghassani@gmail.com>
 */
 
+#include "task/task_runner.h"
 
-#pragma once
-
-
-#include <QObject>
-#include <fstream>
-
-#include <QtWidgets/QGroupBox>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QGroupBox>
-#include <QtWidgets/QFileDialog>
-#include <QtWidgets/QWidget>
-
-#include "ui_log_widget.h"
-
-
-//using OpenPST::GUI;
-
-
-namespace Ui {
-	class LogWidget;
+TaskRunner::TaskRunner(volatile bool* canceller) : canceller(canceller)
+{
+	pool.setExpiryTimeout(-1);
+	pool.setMaxThreadCount(1);
 }
 
-namespace OpenPST{ 
-	namespace GUI{
-		class LogWidget : public QGroupBox
-		{
-
-			Q_OBJECT
-
-			public:
-	
-				explicit LogWidget(QWidget *parent = 0);
-				~LogWidget();
-
-				
-				void log(const char* message);
-				void log(std::string message);
-				void log(QString message);
-
-			public slots:
-				void clear();
-				void save();
-
-			private:
-				Ui::LogWidget *ui;
-
-
-		};
+TaskRunner::~TaskRunner()
+{
+	cancelAll();
+	if (pool.activeThreadCount() > 0) {
+		pool.waitForDone();
 	}
 }
 
+int TaskRunner::queue(Task* task, int priority)
+{
+	if (canceller) {
+		task->setCanceller(canceller);
+	}
 
+	pool.start(task, priority);
+
+	return 0;
+}
+
+
+void TaskRunner::clearQueue()
+{
+	//pool.clear(); NONAME
+}
+
+void TaskRunner::cancelCurrent()
+{
+	if (canceller) {
+		*canceller = true;
+	}
+}
+
+void TaskRunner::cancelAll()
+{
+	clearQueue();
+	cancelCurrent();
+}
+
+bool TaskRunner::isRunning()
+{
+	return pool.activeThreadCount() > 0;
+}
+
+
+
+bool TaskRunner::waitForDone()
+{
+	if (isRunning()) {
+		return pool.waitForDone();
+	}
+	return true;
+}

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Log_widget</class>
- <widget class="QWidget" name="Log_widget">
+ <class>LogWidget</class>
+ <widget class="QWidget" name="LogWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>877</width>
-    <height>580</height>
+    <width>649</width>
+    <height>430</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>LOG</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -30,7 +30,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QTextBrowser" name="textBrowser"/>
+    <widget class="QTextBrowser" name="log"/>
    </item>
   </layout>
  </widget>
