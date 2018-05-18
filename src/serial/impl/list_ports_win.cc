@@ -66,8 +66,14 @@ serial::list_ports()
 			DIREG_DEV,
 			KEY_READ);
 
-		TCHAR port_name[port_name_max_length];
+
 		DWORD port_name_length = port_name_max_length;
+
+		#ifdef UNICODE
+		wchar_t port_name[port_name_max_length];
+		#else
+		TCHAR port_name[port_name_max_length];
+		#endif
 
 		LONG return_code = RegQueryValueEx(     //NONAME ( ANSI VER )
 					hkey,
@@ -88,13 +94,22 @@ serial::list_ports()
 			port_name[0] = '\0';
 
 		// Ignore parallel ports
-
+		#ifdef UNICODE
+		if(wcsstr(port_name, L"LPT") != NULL)
+			continue;
+		#else
 		if(_tcsstr(port_name, _T("LPT")) != NULL)
 			continue;
+		#endif
+
 
 		// Get port friendly name
-
+		#ifdef UNICODE
+		wchar_t friendly_name[friendly_name_max_length];
+		#else
 		TCHAR friendly_name[friendly_name_max_length];
+		#endif
+		
 		DWORD friendly_name_actual_length = 0;
 
 		BOOL got_friendly_name = SetupDiGetDeviceRegistryProperty(
@@ -112,8 +127,12 @@ serial::list_ports()
 			friendly_name[0] = '\0';
 
 		// Get hardware ID
-
+		#ifdef UNICODE
+		wchar_t hardware_id[hardware_id_max_length];
+		#else
 		TCHAR hardware_id[hardware_id_max_length];
+		#endif
+		
 		DWORD hardware_id_actual_length = 0;
 
 		BOOL got_hardware_id = SetupDiGetDeviceRegistryProperty(
@@ -131,14 +150,12 @@ serial::list_ports()
 			hardware_id[0] = '\0';
 
 		#ifdef UNICODE
-			//std::string portName = utf8_encode(port_name);
-			//std::string friendlyName = utf8_encode(friendly_name);
-			//std::string hardwareId = utf8_encode(hardware_id);
-			std::string portName = port_name;
-			std::string friendlyName = friendly_name;
-			std::string hardwareId = hardware_id;
-
-
+			std::string portName = utf8_encode(std::wstring(&port_name[0]));
+			std::string friendlyName = utf8_encode(friendly_name);
+			std::string hardwareId = utf8_encode(hardware_id);
+			//std::string portName = port_name;
+			//std::string friendlyName = friendly_name;
+			//std::string hardwareId = hardware_id;
 		#else
 			std::string portName = port_name;
 			std::string friendlyName = friendly_name;
