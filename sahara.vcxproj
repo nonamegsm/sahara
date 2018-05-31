@@ -187,6 +187,8 @@
     <ClCompile Include="src\about_dialog.cpp" />
     <ClCompile Include="src\application.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\qualcomm\hdlc_encoder.cpp" />
+    <ClCompile Include="src\qualcomm\hdlc_serial.cpp" />
     <ClCompile Include="src\qualcomm\mbn_parser.cpp" />
     <ClCompile Include="src\qualcomm\sahara_serial.cpp" />
     <ClCompile Include="src\qualcomm\sahara_xml_reader.cpp" />
@@ -220,11 +222,13 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DNDEBUG "-I.\include" "-IF:\Projects\QT_sahara_PST\lib\libopenpst\include" "-IF:\Projects\QT_sahara_PST\lib\libopenpst\lib\serial\include" "-IF:\Projects\QT_sahara_PST\lib\libopenpst\lib\pugixml\src" "-IF:\Projects\QT_sahara_PST\lib\gui-common\include" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2012" "-I.\GeneratedFiles"</Command>
     </CustomBuild>
     <ClInclude Include="GeneratedFiles\ui_table_dialog.h" />
+    <ClInclude Include="include\qualcomm\hdlc_serial.h" />
     <ClInclude Include="include\qualcomm\mbn.h" />
     <ClInclude Include="include\qualcomm\mbn_parser.h" />
     <ClInclude Include="include\qualcomm\qcdm_serial.h" />
     <ClInclude Include="include\qualcomm\raw_program_xml_reader.h" />
     <ClInclude Include="include\qualcomm\sahara.h" />
+    <ClInclude Include="include\qualcomm\sahara_serial.h" />
     <ClInclude Include="include\qualcomm\sahara_xml_reader.h" />
     <ClInclude Include="include\serial\serial.h" />
     <CustomBuild Include="include\table_dialog.h">

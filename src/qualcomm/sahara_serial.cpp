@@ -37,9 +37,11 @@ using namespace OpenPST::QC;
 * @param int baudrate
 * @param serial::Timeout - Timeout, defaults to 1000ms
 */
-SaharaSerial::SaharaSerial(std::string port, int baudrate, int timeout) :
-	OpenPST::Serial::GenericSerial(port, baudrate, timeout)
+SaharaSerial::SaharaSerial(std::string port, int baudrate, int timeout ,bool encapsulate) :
+//	OpenPST::Serial::GenericSerial(port, baudrate, timeout)
+	OpenPST::QC::HdlcSerial(port, baudrate, timeout)
 {
+	intEncapsulateFlag=encapsulate;
 }
 
 /**
@@ -54,7 +56,7 @@ SaharaHelloRequest SaharaSerial::readHello()
 	size_t rxSize;
 	SaharaHelloRequest ret = {};
 
-	if (!(rxSize = read(reinterpret_cast<uint8_t*>(&ret), sizeof(ret)))) {
+	if (!(rxSize = read(reinterpret_cast<uint8_t*>(&ret), sizeof(ret),intEncapsulateFlag))) {
 		throw SaharaSerialError("Did not receive hello. Not in sahara mode, already in a session, or requires restart");
 	}
 
@@ -80,10 +82,10 @@ SaharaState SaharaSerial::sendHello(uint32_t mode, uint32_t version, uint32_t mi
 	packet.version          = version;
 	packet.minVersion       = minVersion;
 
-	write((uint8_t*)&packet, sizeof(packet));
+	write((uint8_t*)&packet, sizeof(packet),intEncapsulateFlag);
 
 	try {
-		rxSize = read(buffer, sizeof(ret));
+		rxSize = read(buffer, sizeof(ret),intEncapsulateFlag);
 	}  catch (serial::IOException e) {
 		/*
 		 sometimes (at least in memory debug mode) the device
@@ -102,9 +104,9 @@ SaharaState SaharaSerial::sendHello(uint32_t mode, uint32_t version, uint32_t mi
 
 		readHello();
 
-		write((uint8_t*)&packet, sizeof(packet)); // resend the hello response
+		write((uint8_t*)&packet, sizeof(packet),intEncapsulateFlag); // resend the hello response
 
-		rxSize = read(buffer, SAHARA_MAX_PACKET_SIZE);
+		rxSize = read(buffer, SAHARA_MAX_PACKET_SIZE,intEncapsulateFlag);
 	}
 
 	flush();
@@ -138,7 +140,7 @@ void SaharaSerial::switchMode(uint32_t mode)
 	packet.header.size      = sizeof(packet);
 	packet.mode             = mode;
 
-	write(reinterpret_cast<uint8_t*>(&packet), packet.header.size);
+	write(reinterpret_cast<uint8_t*>(&packet), packet.header.size,intEncapsulateFlag);
 }
 
 SaharaState SaharaSerial::switchModeAndHello(uint32_t mode)
@@ -165,9 +167,9 @@ std::vector<uint8_t> SaharaSerial::sendClientCommand(uint32_t command)
 	packet.header.size      = sizeof(packet);
 	packet.command          = command;
 
-	write((uint8_t*)&packet, sizeof(packet));
+	write((uint8_t*)&packet, sizeof(packet),intEncapsulateFlag);
 
-	if (!(rxSize = read(reinterpret_cast<uint8_t*>(&resp), sizeof(resp)))) {
+	if (!(rxSize = read(reinterpret_cast<uint8_t*>(&resp), sizeof(resp),intEncapsulateFlag))) {
 		throw SaharaSerialError("No response from device");
 	}
 
@@ -181,11 +183,11 @@ std::vector<uint8_t> SaharaSerial::sendClientCommand(uint32_t command)
 	execDataPacket.header.size    = sizeof(SaharaClientCommandExecuteDataRequest);
 	execDataPacket.command        = command;
 
-	write((uint8_t*)&execDataPacket, sizeof(execDataPacket));
+	write((uint8_t*)&execDataPacket, sizeof(execDataPacket),intEncapsulateFlag);
 
 	do {
 
-		if (!(rxSize = read(ret, SAHARA_MAX_PACKET_SIZE))) {
+		if (!(rxSize = read(ret, SAHARA_MAX_PACKET_SIZE,intEncapsulateFlag))) {
 			throw SaharaSerialError("No response from device");
 		}
 
@@ -276,7 +278,7 @@ SaharaReadDataRequest SaharaSerial::sendImage(std::ifstream& file, uint32_t offs
 
 	file.read(reinterpret_cast<char*>(&buffer[0]), size);
 
-	write(buffer);
+	write(buffer,intEncapsulateFlag);
 
 	return readNextImageOffset();
 }
@@ -287,7 +289,7 @@ SaharaReadDataRequest SaharaSerial::readNextImageOffset()
 	size_t rxSize;
 	SaharaReadDataRequest ret = {};
 
-	if (!(rxSize = read(reinterpret_cast<uint8_t*>(&ret), sizeof(ret)))) {
+	if (!(rxSize = read(reinterpret_cast<uint8_t*>(&ret), sizeof(ret),intEncapsulateFlag))) {
 		 throw SaharaSerialError("No response from device");
 	}
 
@@ -337,10 +339,10 @@ size_t SaharaSerial::readMemory(uint32_t address, size_t size, std::vector<uint8
 			packet.size = size;
 		}
 
-		write(reinterpret_cast<uint8_t*>(&packet), sizeof(packet));
+		write(reinterpret_cast<uint8_t*>(&packet), sizeof(packet),intEncapsulateFlag);
 
 		while (available()) {
-			if (!(rxSize = read(buffer, packet.size))) {
+			if (!(rxSize = read(buffer, packet.size),intEncapsulateFlag)) {
 				break;
 			}
 
@@ -395,7 +397,7 @@ void SaharaSerial::sendDone()
 	packet.header.command = kSaharaCommandDone;
 	packet.header.size = sizeof(packet);
 
-	write((uint8_t*)&packet, sizeof(packet));
+	write((uint8_t*)&packet, sizeof(packet),intEncapsulateFlag);
 
 	if (!(rxSize = read(reinterpret_cast<uint8_t*>(&resp), sizeof(resp)))) {
 		 throw SaharaSerialError("No response from device");
@@ -416,8 +418,8 @@ void SaharaSerial::sendReset()
 	packet.header.size = sizeof(packet);
 
 	try {
-		write(reinterpret_cast<uint8_t*>(&packet), sizeof(packet));
-		rxSize = read(reinterpret_cast<uint8_t*>(&resp), sizeof(resp));
+		write(reinterpret_cast<uint8_t*>(&packet), sizeof(packet),intEncapsulateFlag);
+		rxSize = read(reinterpret_cast<uint8_t*>(&resp), sizeof(resp),intEncapsulateFlag);
 	} catch (...) {
 		close();
 		return;
@@ -433,6 +435,11 @@ void SaharaSerial::close()
 	serial::Serial::close();
 }
 
+
+void SaharaSerial::SetEncapsulationMode(bool Enc)
+{
+intEncapsulateFlag=Enc;
+}
 
 void SaharaSerial::validateResponse(uint32_t expectedResponseCommand, SaharaHeader* data, size_t dataSize)
 {

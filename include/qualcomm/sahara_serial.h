@@ -28,6 +28,7 @@
 
 #include "definitions.h"
 #include "serial/generic_serial.h"
+#include "qualcomm/hdlc_serial.h"
 #include "qualcomm/sahara.h"
 #include "qualcomm/mbn.h"
 #include "util/hexdump.h"
@@ -69,8 +70,8 @@ namespace OpenPST {
 			};
 		};
 
-		class SaharaSerial : public OpenPST::Serial::GenericSerial {
-
+		//class SaharaSerial : public OpenPST::Serial::GenericSerial {
+		class SaharaSerial : public OpenPST::QC::HdlcSerial {
 			public:          
 				/**
 				* @brief SaharaSerial
@@ -79,7 +80,7 @@ namespace OpenPST {
 				* @param int baudrate
 				* @param int timeout in ms
 				*/
-				SaharaSerial(std::string port, int baudrate = 115200, int timeout = 1000);
+				SaharaSerial(std::string port, int baudrate = 115200, int timeout = 1000, bool encapsulate = false);
 			
 				/**
 				* @brief ~SaharaSerial
@@ -289,6 +290,12 @@ namespace OpenPST {
 				* @return bool
 				*/
 				bool isErrorResponse(SaharaHeader* data, size_t dataSize);
+
+				void SetEncapsulationMode(bool Enc);
+
+				private:
+
+				bool intEncapsulateFlag;
 		};
 
 

@@ -33,7 +33,7 @@ using namespace OpenPST::GUI;
 
 SaharaWindow::SaharaWindow(QWidget *parent) :QMainWindow(parent),
 	ui(new Ui::SaharaWindow),
-	port("", 115200, 500),
+	port("", 115200, 500,true),
 	deviceState(),
 	taskRunner(&taskShouldCancel)
 {
@@ -50,8 +50,8 @@ SaharaWindow::SaharaWindow(QWidget *parent) :QMainWindow(parent),
 	ui->clientCommandValue->addItem(tr("Read Serial Number"), kSaharaClientCmdSerialNumRead);
 	ui->clientCommandValue->addItem(tr("Read MSM HW ID"), kSaharaClientCmdMsmHWIDRead);
 	ui->clientCommandValue->addItem(tr("Read OEM PK Hash"), kSaharaClientOemPkHashRead);
-	//ui->clientCommandValue->addItem(tr("Switch To DMSS DLOAD"), kSaharaClientCmdSwitchDMSS);
-	//ui->clientCommandValue->addItem(tr("Switch To Streaming DLOAD"), kSaharaClientCmdSwitchToStreamingDload);
+	ui->clientCommandValue->addItem(tr("Switch To DMSS DLOAD"), kSaharaClientCmdSwitchDMSS);
+	ui->clientCommandValue->addItem(tr("Switch To Streaming DLOAD"), kSaharaClientCmdSwitchToStreamingDload);
 	ui->clientCommandValue->addItem(tr("Read Debug Data"), kSaharaClientCmdReadDebugData);
 	ui->clientCommandValue->addItem(tr("Get SBL SW Version"), kSaharaClientCmdGetSblVersion);
 

@@ -464,7 +464,7 @@ public:
         portConnectButton->setText(QApplication::translate("SaharaWindow", "Connect", 0));
         portListLabel->setText(QApplication::translate("SaharaWindow", "Device", 0));
         autoHelloCheckbox->setText(QApplication::translate("SaharaWindow", "Auto Hello", 0));
-        DMSScheckBox->setText(QApplication::translate("SaharaWindow", "CheckBox", 0));
+        DMSScheckBox->setText(QApplication::translate("SaharaWindow", "DMSS Cmd", 0));
         miscGroupBox->setTitle(QApplication::translate("SaharaWindow", "Misc", 0));
         resetButton->setText(QApplication::translate("SaharaWindow", "Reset", 0));
         doneButton->setText(QApplication::translate("SaharaWindow", "Done", 0));

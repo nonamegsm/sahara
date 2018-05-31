@@ -162,6 +162,12 @@
     <ClCompile Include="src\serial\impl\list_ports_win.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\qualcomm\hdlc_serial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\qualcomm\hdlc_encoder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\task\sahara_image_transfer_task.h">
@@ -217,6 +223,12 @@
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_table_dialog.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qualcomm\sahara_serial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qualcomm\hdlc_serial.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
